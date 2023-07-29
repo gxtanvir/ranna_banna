@@ -8,9 +8,20 @@ class MealItemTrait extends StatelessWidget {
   });
   final Meal meal;
 
+  get complexityText {
+    return meal.complexity.name[0].toUpperCase() +
+        meal.complexity.name.substring(1);
+  }
+
+  get afforadbilityText {
+    return meal.affordability.name[0].toUpperCase() +
+        meal.affordability.name.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           children: [
@@ -19,7 +30,7 @@ class MealItemTrait extends StatelessWidget {
               width: 8,
             ),
             Text(
-              meal.duration.toString(),
+              '${meal.duration.toString()} min',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
@@ -36,7 +47,7 @@ class MealItemTrait extends StatelessWidget {
               width: 8,
             ),
             Text(
-              meal.affordability.name.toUpperCase(),
+              complexityText,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
@@ -56,7 +67,7 @@ class MealItemTrait extends StatelessWidget {
               width: 8,
             ),
             Text(
-              meal.affordability.name.toUpperCase(),
+              afforadbilityText,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),

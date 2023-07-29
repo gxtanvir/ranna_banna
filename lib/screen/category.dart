@@ -8,7 +8,7 @@ class CategoryScreen extends StatelessWidget {
   const CategoryScreen({
     super.key,
   });
-  
+
   // For Filtering Meal And Navigate to Meals Screen
   void _selectCategory(BuildContext context, Category category) {
     final filterdMeals =
@@ -24,14 +24,6 @@ class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'ক্যাটাগরি পছন্দ করুন',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-        ),
-      ),
       body: GridView(
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

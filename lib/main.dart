@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ranna_banna/screen/category.dart';
+import 'package:ranna_banna/screen/tabs.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.lightGreenAccent,
-    brightness: Brightness.dark
-  ),
+      seedColor: Colors.lightGreenAccent, brightness: Brightness.dark),
   textTheme: GoogleFonts.balooDa2TextTheme(),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color.fromARGB(255, 67, 118, 8),
+    // foregroundColor:
+  ),
 );
 
 void main() {
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       debugShowCheckedModeBanner: false,
-      home: const CategoryScreen(),
+      home: const TabScreen(),
     );
   }
 }

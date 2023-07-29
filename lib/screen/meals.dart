@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:ranna_banna/model/meal.dart';
+import 'package:ranna_banna/screen/meal_details.dart';
 import 'package:ranna_banna/widget/meal_item.dart';
 
 class MealScreen extends StatelessWidget {
   const MealScreen({
     super.key,
-    required this.title,
     required this.meals,
+    this.title,
   });
-  final String title;
+  final String? title;
   final List<Meal> meals;
+
+  void _selectMeal(BuildContext context, Meal meal) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => MealDetailsScreen(meal: meal),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget content = ListView.builder(
       itemCount: meals.length,
-      itemBuilder: (context, index) => MealItem(meal: meals[index]),
+      itemBuilder: (context, index) => MealItem(
+        meal: meals[index],
+        onSelectMeal: (meal) {
+          _selectMeal(context, meal);
+        },
+      ),
     );
 
     if (meals.isEmpty) {
@@ -43,9 +57,12 @@ class MealScreen extends StatelessWidget {
         ),
       );
     }
+    if (title == null) {
+      return content;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title!),
       ),
       body: content,
     );
