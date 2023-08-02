@@ -27,7 +27,7 @@ class MainDrawer extends StatelessWidget {
                 end: Alignment.bottomRight,
               ),
             ),
-            child: Column(
+            child: Row(
               children: [
                 Icon(
                   Icons.fastfood,
@@ -35,13 +35,13 @@ class MainDrawer extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(
-                  height: 18,
+                  width: 18,
                 ),
                 Text(
                   'রান্নাবান্না!',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 40,
+                        // fontSize: 40,
                       ),
                 ),
               ],

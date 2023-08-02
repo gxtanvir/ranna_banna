@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ranna_banna/data/category_n_meal_data.dart';
 import 'package:ranna_banna/model/meal.dart';
 import 'package:ranna_banna/screen/category.dart';
 import 'package:ranna_banna/screen/filter_screen.dart';
 import 'package:ranna_banna/screen/meals.dart';
 import 'package:ranna_banna/widget/main_drawer.dart';
+
+const kInitialFilters = {
+  Filter.halal: false,
+  Filter.glutenFree: false,
+  Filter.vegan: false,
+  Filter.vegetarian: false,
+};
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -17,6 +25,7 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   int _selectedIndex = 0;
   final List<Meal> _favoriteMeal = [];
+  Map<Filter, bool> _selectedFilter = kInitialFilters;
 
   void _onTapItem(int index) {
     setState(() {
@@ -51,21 +60,50 @@ class _TabScreenState extends State<TabScreen> {
     }
   }
 
-  void _setScreen(String identifire) {
+  void _setScreen(String identifire) async {
     if (identifire == 'home') {
-      // Navigator.of(context).push(
-      //   MaterialPageRoute(
-      //     builder: (ctx) => TabScreen(),
-      //   ),
-      // );
+      if (_selectedIndex == 0) {
+        Navigator.of(context).pop();
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) => const TabScreen(),
+          ),
+        );
+      }
+    } else {
       Navigator.of(context).pop();
-    } else {}
+      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+        MaterialPageRoute(
+          builder: (ctx) => FilterScreen(currentFilter: _selectedFilter),
+        ),
+      );
+      setState(() {
+        _selectedFilter = result ?? kInitialFilters;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final availableMeals = mealList.where((meal) {
+      if (_selectedFilter[Filter.halal]! && !meal.isHalal) {
+        return false;
+      }
+      if (_selectedFilter[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilter[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      if (_selectedFilter[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      return true;
+    }).toList();
     Widget activePage = CategoryScreen(
       onToggleFavorite: _toggleFavorite,
+      availableMeal: availableMeals,
     );
     String activePageTitle = 'ক্যাটাগরি পছন্দ করুন';
     if (_selectedIndex == 1) {
