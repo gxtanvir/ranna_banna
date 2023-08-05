@@ -55,7 +55,7 @@ class MealDetailsScreen extends StatelessWidget {
                 ),
                 for (final ingradient in meal.ingradiants)
                   Text(
-                    '🔹${ingradient}',
+                    '- ${ingradient}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onBackground,
                         ),

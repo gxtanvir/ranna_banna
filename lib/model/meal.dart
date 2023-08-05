@@ -26,7 +26,7 @@ class Meal {
   final Affordability affordability;
   final Complexity complexity;
   final int duration;
-  final String category;
+  final List<String> category;
   final String title;
   final String imageUrl;
   final List<String> ingradiants;
