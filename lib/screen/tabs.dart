@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ranna_banna/data/category_n_meal_data.dart';
 import 'package:ranna_banna/model/meal.dart';
+import 'package:ranna_banna/provider/meal_provider.dart';
 import 'package:ranna_banna/screen/category.dart';
 import 'package:ranna_banna/screen/filter_screen.dart';
 import 'package:ranna_banna/screen/meals.dart';
 import 'package:ranna_banna/widget/main_drawer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 const kInitialFilters = {
   Filter.halal: false,
@@ -13,16 +14,16 @@ const kInitialFilters = {
   Filter.vegetarian: false,
 };
 
-class TabScreen extends StatefulWidget {
+class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({super.key});
 
   @override
-  State<TabScreen> createState() {
+  ConsumerState<TabScreen> createState() {
     return _TabScreenState();
   }
 }
 
-class _TabScreenState extends State<TabScreen> {
+class _TabScreenState extends ConsumerState<TabScreen> {
   int _selectedIndex = 0;
   final List<Meal> _favoriteMeal = [];
   Map<Filter, bool> _selectedFilter = kInitialFilters;
@@ -86,7 +87,8 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = mealList.where((meal) {
+    final meals = ref.watch(mealsProvider);
+    final availableMeals = meals.where((meal) {
       if (_selectedFilter[Filter.halal]! && !meal.isHalal) {
         return false;
       }
