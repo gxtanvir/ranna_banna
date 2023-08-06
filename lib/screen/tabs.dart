@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ranna_banna/model/meal.dart';
 import 'package:ranna_banna/provider/meal_provider.dart';
 import 'package:ranna_banna/screen/category.dart';
 import 'package:ranna_banna/screen/filter_screen.dart';
 import 'package:ranna_banna/screen/meals.dart';
 import 'package:ranna_banna/widget/main_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ranna_banna/provider/favorites_provider.dart';
 
 const kInitialFilters = {
   Filter.halal: false,
@@ -25,7 +25,6 @@ class TabScreen extends ConsumerStatefulWidget {
 
 class _TabScreenState extends ConsumerState<TabScreen> {
   int _selectedIndex = 0;
-  final List<Meal> _favoriteMeal = [];
   Map<Filter, bool> _selectedFilter = kInitialFilters;
 
   void _onTapItem(int index) {
@@ -34,32 +33,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
     });
   }
 
-  void _showInfoMessage(String text) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          text,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
 
-  void _toggleFavorite(Meal meal) {
-    if (_favoriteMeal.contains(meal)) {
-      setState(() {
-        _favoriteMeal.remove(meal);
-      });
-      _showInfoMessage('ফেভারিট থেকে রিমুভ করা হয়েছে।');
-    } else {
-      setState(() {
-        _favoriteMeal.add(meal);
-      });
-      _showInfoMessage('ফেভারিটে যোগ করা হয়েছে!');
-    }
-  }
 
   void _setScreen(String identifire) async {
     if (identifire == 'home') {
@@ -104,14 +78,13 @@ class _TabScreenState extends ConsumerState<TabScreen> {
       return true;
     }).toList();
     Widget activePage = CategoryScreen(
-      onToggleFavorite: _toggleFavorite,
       availableMeal: availableMeals,
     );
     String activePageTitle = 'ক্যাটাগরি পছন্দ করুন';
     if (_selectedIndex == 1) {
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
       activePage = MealScreen(
-        meals: _favoriteMeal,
-        onToggleFavorite: _toggleFavorite,
+        meals: favoriteMeals,
       );
       activePageTitle = 'প্রিয় রেসিপি';
     }

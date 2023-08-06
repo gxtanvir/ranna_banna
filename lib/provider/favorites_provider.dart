@@ -4,16 +4,19 @@ import 'package:ranna_banna/model/meal.dart';
 class FavoriteMealsNotifer extends StateNotifier<List<Meal>> {
   FavoriteMealsNotifer() : super([]);
 
-  void togleMealFavoriteStatus(Meal meal) {
+  bool togleMealFavoriteStatus(Meal meal) {
     final mealIsFavorite = state.contains(meal);
     if (mealIsFavorite) {
       state = state.where((m) => m.id != meal.id).toList();
+      return false;
     } else {
       state = [...state, meal];
+      return true;
     }
   }
 }
 
-final favoriteMealsProvider = StateNotifierProvider<FavoriteMealsNotifer, List<Meal>>((ref) {
+final favoriteMealsProvider =
+    StateNotifierProvider<FavoriteMealsNotifer, List<Meal>>((ref) {
   return FavoriteMealsNotifer();
 });
