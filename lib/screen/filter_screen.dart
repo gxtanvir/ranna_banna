@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum Filter {
-  halal,
-  glutenFree,
-  vegan,
-  vegetarian,
-}
+import 'package:ranna_banna/provider/filter_provider.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({
@@ -30,7 +24,7 @@ class _FilterScreenState extends State<FilterScreen> {
     super.initState();
     _halalFilterSet = widget.currentFilter[Filter.halal]!;
     _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
-    _veganFilterSet = widget.currentFilter[Filter.halal]!;
+    _veganFilterSet = widget.currentFilter[Filter.vegan]!;
     _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
   }
 

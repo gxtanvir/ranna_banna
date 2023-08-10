@@ -6,6 +6,7 @@ import 'package:ranna_banna/screen/meals.dart';
 import 'package:ranna_banna/widget/main_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ranna_banna/provider/favorites_provider.dart';
+import 'package:ranna_banna/provider/filter_provider.dart';
 
 const kInitialFilters = {
   Filter.halal: false,
