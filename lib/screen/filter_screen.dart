@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ranna_banna/provider/filter_provider.dart';
 
-class FilterScreen extends StatefulWidget {
+class FilterScreen extends ConsumerStatefulWidget {
   const FilterScreen({
     super.key,
-    required this.currentFilter,
   });
-  final Map<Filter, bool> currentFilter;
   @override
-  State<FilterScreen> createState() {
+  ConsumerState<FilterScreen> createState() {
     return _FilterScreenState();
   }
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _FilterScreenState extends ConsumerState<FilterScreen> {
   var _halalFilterSet = false;
   var _glutenFreeFilterSet = false;
   var _veganFilterSet = false;
@@ -22,10 +21,11 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void initState() {
     super.initState();
-    _halalFilterSet = widget.currentFilter[Filter.halal]!;
-    _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
-    _veganFilterSet = widget.currentFilter[Filter.vegan]!;
-    _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
+    final activeFilter = ref.read(filterProvider);
+    _halalFilterSet = activeFilter[Filter.halal]!;
+    _glutenFreeFilterSet = activeFilter[Filter.glutenFree]!;
+    _veganFilterSet = activeFilter[Filter.vegan]!;
+    _vegetarianFilterSet = activeFilter[Filter.vegetarian]!;
   }
 
   @override
@@ -36,13 +36,13 @@ class _FilterScreenState extends State<FilterScreen> {
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Navigator.of(context).pop({
+          ref.read(filterProvider.notifier).setFilters({
             Filter.halal: _halalFilterSet,
             Filter.glutenFree: _glutenFreeFilterSet,
             Filter.vegan: _veganFilterSet,
             Filter.vegetarian: _vegetarianFilterSet,
           });
-          return false;
+          return true;
         },
         child: Column(
           children: [

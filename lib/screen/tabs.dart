@@ -26,15 +26,12 @@ class TabScreen extends ConsumerStatefulWidget {
 
 class _TabScreenState extends ConsumerState<TabScreen> {
   int _selectedIndex = 0;
-  Map<Filter, bool> _selectedFilter = kInitialFilters;
 
   void _onTapItem(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
-
 
   void _setScreen(String identifire) async {
     if (identifire == 'home') {
@@ -49,31 +46,29 @@ class _TabScreenState extends ConsumerState<TabScreen> {
       }
     } else {
       Navigator.of(context).pop();
-      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+      await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => FilterScreen(currentFilter: _selectedFilter),
+          builder: (ctx) => const FilterScreen(),
         ),
       );
-      setState(() {
-        _selectedFilter = result ?? kInitialFilters;
-      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(mealsProvider);
+    final activeFilters = ref.watch(filterProvider);
     final availableMeals = meals.where((meal) {
-      if (_selectedFilter[Filter.halal]! && !meal.isHalal) {
+      if (activeFilters[Filter.halal]! && !meal.isHalal) {
         return false;
       }
-      if (_selectedFilter[Filter.glutenFree]! && !meal.isGlutenFree) {
+      if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
-      if (_selectedFilter[Filter.vegan]! && !meal.isVegan) {
+      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
         return false;
       }
-      if (_selectedFilter[Filter.vegetarian]! && !meal.isVegetarian) {
+      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
         return false;
       }
       return true;
