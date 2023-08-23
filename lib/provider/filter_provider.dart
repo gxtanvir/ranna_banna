@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ranna_banna/provider/meal_provider.dart';
 
 enum Filter {
   halal,
@@ -31,4 +32,24 @@ class FilterNotifier extends StateNotifier<Map<Filter, bool>> {
 final filterProvider =
     StateNotifierProvider<FilterNotifier, Map<Filter, bool>>((ref) {
   return FilterNotifier();
+});
+
+final filterdMealsProvider = Provider((ref) {
+  final meals = ref.watch(mealsProvider);
+  final activeFilters = ref.watch(filterProvider);
+  return meals.where((meal) {
+    if (activeFilters[Filter.halal]! && !meal.isHalal) {
+      return false;
+    }
+    if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+      return false;
+    }
+    if (activeFilters[Filter.vegan]! && !meal.isVegan) {
+      return false;
+    }
+    if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+      return false;
+    }
+    return true;
+  }).toList();
 });

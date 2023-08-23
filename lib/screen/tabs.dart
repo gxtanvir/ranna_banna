@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ranna_banna/provider/meal_provider.dart';
 import 'package:ranna_banna/screen/category.dart';
 import 'package:ranna_banna/screen/filter_screen.dart';
 import 'package:ranna_banna/screen/meals.dart';
@@ -56,23 +55,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final meals = ref.watch(mealsProvider);
-    final activeFilters = ref.watch(filterProvider);
-    final availableMeals = meals.where((meal) {
-      if (activeFilters[Filter.halal]! && !meal.isHalal) {
-        return false;
-      }
-      if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
-        return false;
-      }
-      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      return true;
-    }).toList();
+    final availableMeals = ref.watch(filterdMealsProvider);
     Widget activePage = CategoryScreen(
       availableMeal: availableMeals,
     );
