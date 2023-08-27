@@ -39,8 +39,17 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border_outlined),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => FadeTransition(
+                opacity: Tween(begin: 0.5, end: 1.0).animate(animation),
+                child: child,
+              ),
+              child: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+                key: ValueKey(isFavorite),
+              ),
+            ),
             color: isFavorite ? Colors.redAccent : Colors.white,
           ),
         ],
@@ -55,12 +64,15 @@ class MealDetailsScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FadeInImage(
-                  placeholder: MemoryImage(kTransparentImage),
-                  image: NetworkImage(meal.imageUrl),
-                  fit: BoxFit.cover,
-                  height: 220,
-                  width: double.infinity,
+                Hero(
+                  tag: meal.id,
+                  child: FadeInImage(
+                    placeholder: MemoryImage(kTransparentImage),
+                    image: NetworkImage(meal.imageUrl),
+                    fit: BoxFit.cover,
+                    height: 220,
+                    width: double.infinity,
+                  ),
                 ),
                 const SizedBox(
                   height: 12,
